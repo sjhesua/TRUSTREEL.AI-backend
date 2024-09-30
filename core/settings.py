@@ -78,7 +78,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
-ALLOWED_HOSTS = ['localhost', '.localhost',f"{os.getenv('BACKEND_IP')}",'trustreel.ddns.net','https://trustreelai-backend-production.up.railway.app',]
+ALLOWED_HOSTS = ['localhost', '.localhost',f"{os.getenv('BACKEND_IP')}",'trustreel.ddns.net','trustreelai-backend-production.up.railway.app',]
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
