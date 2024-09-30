@@ -11,14 +11,16 @@ load_dotenv()
 def create_video_on_tavus(sender, instance, created, **kwargs):
     if created:
         replica_id = instance.queue.replicId
-
+        print("XXXXXXXXXXXX")
+        print(f"{os.getenv('BACKEND_IP')}/videos/tavus/callback/")
+        print("XXXXXXXXXXXX")
         url = "https://tavusapi.com/v2/videos"
         payload = {
             "background_url": "",  # Puedes personalizar estos valores según sea necesario
             "replica_id": replica_id,      # Puedes personalizar estos valores según sea necesario
             "script": instance.videoText,
             "video_name": f"{instance.id}",
-            "callback_url": f"https://{os.getenv('BACKEND_IP')}/videos/tavus/callback/"
+            "callback_url": f"https://trustreelai-backend-production.up.railway.app/videos/tavus/callback/"
         }
         headers = {
             "x-api-key": os.getenv("TAVUS_KEY"),  # Reemplaza <api-key> con tu clave API real
