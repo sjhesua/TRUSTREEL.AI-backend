@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 COPY . /app
 
 # Instalar gunicorn
-RUN pip install gunicorn
+RUN pip install uwsgi
 
 # Recopilar archivos estáticos de Django
 RUN python manage.py collectstatic --noinput
@@ -24,4 +24,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Comando para ejecutar la aplicación
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
+CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "app.py", "--callable", "app", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000"]
