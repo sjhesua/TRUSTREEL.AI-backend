@@ -44,4 +44,4 @@ EXPOSE 8000
 
 # Comando para ejecutar la aplicación
 # Comando para ejecutar la aplicación
-CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "core/core/wsgi.py", "--callable", "application", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000"]
+CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "core/core/wsgi.py", "--callable", "application", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000", "--buffer-size", "32768"]
