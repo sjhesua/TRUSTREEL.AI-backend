@@ -8,11 +8,11 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y build-essential
 
 # Copiar y instalar dependencias del backend
-COPY core/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copiar el código del backend
-COPY core /app
+COPY . /app
 
 # Instalar gunicorn
 RUN pip install gunicorn
