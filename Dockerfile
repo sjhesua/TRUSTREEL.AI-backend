@@ -32,7 +32,7 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copiar el código del backend
-COPY . /app
+COPY . .
 
 # Recopilar archivos estáticos de Django
 RUN python manage.py collectstatic --noinput
