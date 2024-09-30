@@ -78,7 +78,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
-ALLOWED_HOSTS = ['localhost', '.localhost',f"{os.getenv('BACKEND_IP')}",'trustreel.ddns.net']
+ALLOWED_HOSTS = ['localhost', '.localhost',f"{os.getenv('BACKEND_IP')}",'trustreel.ddns.net'"https://trustreelai-backend-production.up.railway.app",]
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
@@ -90,6 +90,7 @@ CORS_ALLOWED_ORIGINS = [
     f"https://{os.getenv('BACKEND_IP')}",
     f"https://{os.getenv('BACKEND_IP')}:3000",
     "https://trustreel.ddns.net",
+    "https://trustreelai-backend-production.up.railway.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -99,6 +100,7 @@ CSRF_TRUSTED_ORIGINS = [
     f"https://{os.getenv('BACKEND_IP')}",
     f"https://{os.getenv('BACKEND_IP')}:3000",
     "https://trustreel.ddns.net",
+    "https://trustreelai-backend-production.up.railway.app",
 ]
 
 MEDIA_URL = '/media/'
