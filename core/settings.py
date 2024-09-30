@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'client',
     'emailManager',
     'videoManager',
-    'sslserver',
 ]
 
 REST_FRAMEWORK = {
