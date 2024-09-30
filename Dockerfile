@@ -21,8 +21,8 @@ RUN apt-get update \
     python3-dev \
     curl
 
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
-    && apt-get install -y nodejs
+#RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
+#    && apt-get install -y nodejs
 
 # Establecer el directorio de trabajo
 WORKDIR /app
@@ -44,4 +44,4 @@ EXPOSE 8000
 
 # Comando para ejecutar la aplicación
 # Comando para ejecutar la aplicación
-CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "core/core/wsgi.py", "--callable", "application", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000", "--buffer-size", "32768"]
+CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "core/wsgi.py", "--callable", "application", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000", "--buffer-size", "32768"]
