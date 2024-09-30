@@ -1,6 +1,26 @@
 # Usar una imagen base de Python
 FROM python:3.9-slim
 
+# Configura variables de entorno
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=120 \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
+
+# Instala herramientas necesarias para construir paquetes de Python y Node.js
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+    gcc \
+    g++ \
+    build-essential \
+    software-properties-common \
+    git \
+    python3-dev \
+    curl
+
 # Establecer el directorio de trabajo
 WORKDIR /app
 
