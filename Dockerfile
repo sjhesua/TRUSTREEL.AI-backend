@@ -33,13 +33,15 @@ RUN apt-get update && apt-get install -y build-essential
 # Copiar y instalar dependencias del backend
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
-# Recopilar archivos estáticos de Django
-RUN python manage.py collectstatic --noinput
+
 # Copiar el código del backend
 COPY . .
 
+# Recopilar archivos estáticos de Django
+RUN python manage.py collectstatic --noinput
 # Exponer el puerto
 EXPOSE 8000
 
 # Comando para ejecutar la aplicación
-CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "app.py", "--callable", "app", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000"]
+# Comando para ejecutar la aplicación
+CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "core/core/wsgi.py", "--callable", "application", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000"]
