@@ -5,7 +5,7 @@ from django.urls import path, include
 from emailManager.views import send_email, ejecutar_crear_conversacion, ejecutar_end_conversation
 
 urlpatterns = [
-    path('api/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('company/', include('company.urls')),
     path('client/', include('client.urls')),
     path('videos/', include('videoManager.urls')),
