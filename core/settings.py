@@ -96,13 +96,17 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
     "http://trustreel.ddns.net",
+    "https://trustreel.ddns.net",
     "http://trustreelai-backend-production.up.railway.app",
+    "https://trustreelai-backend-production.up.railway.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://trustreel.ddns.net",
+    "https://trustreel.ddns.net",
     "http://trustreelai-backend-production.up.railway.app",
+    "https://trustreelai-backend-production.up.railway.app",
 ]
 
 MEDIA_URL = '/media/'
