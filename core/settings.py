@@ -85,25 +85,15 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    f"http://{os.getenv('BACKEND_IP')}",
-    f"http://{os.getenv('BACKEND_IP')}:3000",
-    f"https://{os.getenv('BACKEND_IP')}",
-    f"https://{os.getenv('BACKEND_IP')}:3000",
     "https://trustreel.ddns.net",
     "https://trustreelai-backend-production.up.railway.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    f"http://{os.getenv('BACKEND_IP')}",
-    f"http://{os.getenv('BACKEND_IP')}:3000",
-    f"https://{os.getenv('BACKEND_IP')}",
-    f"https://{os.getenv('BACKEND_IP')}:3000",
     "https://trustreel.ddns.net",
     "https://trustreelai-backend-production.up.railway.app",
 ]
-
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
