@@ -37,6 +37,12 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 # Copiar el código del backend
 COPY . .
 
+# Crear la carpeta de archivos media y establecer permisos
+RUN mkdir -p /app/core/media && chown -R uwsgiuser:uwsgiuser /app/core/media
+
+# Crear la carpeta de archivos media y establecer permisos
+RUN mkdir -p /app/core/static && chown -R uwsgiuser:uwsgiuser /app/core/static
+
 # Recopilar archivos estáticos de Django
 RUN python manage.py collectstatic --noinput
 # Exponer el puerto
