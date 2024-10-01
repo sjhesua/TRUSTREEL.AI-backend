@@ -30,6 +30,10 @@ WORKDIR /app
 # Instalar herramientas de construcción
 RUN apt-get update && apt-get install -y build-essential
 
+# Crear un usuario no root
+RUN adduser --disabled-password --gecos '' uwsgiuser
+
+
 # Copiar y instalar dependencias del backend
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
