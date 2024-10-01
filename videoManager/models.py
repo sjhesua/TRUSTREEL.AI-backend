@@ -15,7 +15,7 @@ class VideoGenerationQueue(models.Model):
     replicId = models.CharField(max_length=100)
 
 class VideoGenerationQueueItem(models.Model):
-    videoText = models.CharField(max_length=100)
+    videoText = models.CharField(max_length=10000)
     queue = models.ForeignKey(VideoGenerationQueue, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     url= models.CharField(max_length=100)
