@@ -21,9 +21,6 @@ RUN apt-get update \
     python3-dev \
     curl
 
-#RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
-#    && apt-get install -y nodejs
-
 # Establecer el directorio de trabajo
 WORKDIR /app
 
@@ -33,25 +30,25 @@ RUN apt-get update && apt-get install -y build-essential
 # Crear un usuario no root
 RUN adduser --disabled-password --gecos '' uwsgiuser
 
-
 # Copiar y instalar dependencias del backend
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copiar el código del backend
 COPY . .
-
+# Copiar la carpeta de archivos media
+COPY media /app/media
 # Crear la carpeta de archivos media y establecer permisos
-RUN mkdir -p /app/core/media && chown -R uwsgiuser:uwsgiuser /app/core/media
+RUN mkdir -p /app/media && chown -R uwsgiuser:uwsgiuser /app/media
 
-# Crear la carpeta de archivos media y establecer permisos
-RUN mkdir -p /app/core/static && chown -R uwsgiuser:uwsgiuser /app/core/static
+# Crear la carpeta de archivos staticfiles y establecer permisos
+RUN mkdir -p /app/staticfiles && chown -R uwsgiuser:uwsgiuser /app/staticfiles
 
 # Recopilar archivos estáticos de Django
 RUN python manage.py collectstatic --noinput
+
 # Exponer el puerto
 EXPOSE 8000
 
-# Comando para ejecutar la aplicación
 # Comando para ejecutar la aplicación
 CMD ["uwsgi", "--http", ":8000", "--wsgi-file", "core/wsgi.py", "--callable", "application", "--master", "--processes", "4", "--threads", "2", "--http-timeout", "3000", "--buffer-size", "32768"]
