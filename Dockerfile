@@ -36,8 +36,10 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copiar el código del backend
 COPY . .
+
 # Copiar la carpeta de archivos media
 COPY media /app/media
+
 # Crear la carpeta de archivos media y establecer permisos
 RUN mkdir -p /app/media && chown -R uwsgiuser:uwsgiuser /app/media
 
