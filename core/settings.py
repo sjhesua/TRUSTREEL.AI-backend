@@ -103,6 +103,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://trustreelai-backend-production.up.railway.app",
 ]
 
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

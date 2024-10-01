@@ -18,7 +18,7 @@ def create_video_on_tavus(sender, instance, created, **kwargs):
             "replica_id": replica_id,      # Puedes personalizar estos valores según sea necesario
             "script": instance.videoText,
             "video_name": f"{instance.id}",
-            "callback_url": f"https://trustreelai-backend-production.up.railway.app/videos/tavus/callback/"
+            "callback_url": f"https://webhook.site/#!/view/98ad9c92-b63d-4ab3-92b1-c8341b7c4980"
         }
         headers = {
             "x-api-key": os.getenv("TAVUS_KEY"),
