@@ -184,7 +184,9 @@ class VideoStream(APIView):
 
 class CreateVideoGenerationQueueView(APIView):
     permission_classes = [IsAuthenticated]
-
+    print("XXXXXXXXXXXXXXXXXXXXXXx")
+    print("VIDEO CREADO")
+    print("XXXXXXXXXXXXXXXXXXXXXXx")
     def post(self, request, *args, **kwargs):
         texts = request.data.get('texts', [])
         replicaCode = request.data['replicaCode']

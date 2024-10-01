@@ -14,11 +14,11 @@ def create_video_on_tavus(sender, instance, created, **kwargs):
         print(f"{os.getenv('BACKEND_IP')}/videos/tavus/callback/")
         url = "https://tavusapi.com/v2/videos"
         payload = {
-            "background_url": "",  # Puedes personalizar estos valores según sea necesario
-            "replica_id": replica_id,      # Puedes personalizar estos valores según sea necesario
+            "background_url": "",
+            "replica_id": replica_id,
             "script": instance.videoText,
             "video_name": f"{instance.id}",
-            "callback_url": f"https://webhook.site/#!/view/98ad9c92-b63d-4ab3-92b1-c8341b7c4980"
+            "callback_url": f"https://trustreelai-backend-production.up.railway.app/videos/tavus/callback/"
         }
         headers = {
             "x-api-key": os.getenv("TAVUS_KEY"),
