@@ -232,6 +232,8 @@ class VideoPorUrl(APIView):
         return Response({"error": "customeURL parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
 
 #TAVUS
+
+
 class TavusVideoCreationView(APIView):
     permission_classes = [IsAuthenticated]
 
