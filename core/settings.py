@@ -88,7 +88,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
-ALLOWED_HOSTS = ['localhost', '206.1.183.225','.localhost','trustreel-ai-frontend.onrender.com','trustreel.ddns.net','trustreelai-backend-production.up.railway.app',]
+ALLOWED_HOSTS = ['localhost', '206.1.246.75','.localhost','trustreel-ai-frontend.onrender.com','trustreel.ddns.net','trustreelai-backend-production.up.railway.app',]
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",

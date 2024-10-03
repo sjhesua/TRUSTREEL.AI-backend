@@ -12,3 +12,4 @@ class ImageUpload(models.Model):
     code = models.CharField(max_length=100)
     replicaName = models.CharField(max_length=100)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    style = models.CharField(max_length=1000, default='')

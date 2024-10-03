@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import ImageUpload
 
 class ImageUploadAdmin(admin.ModelAdmin):
-    list_display = ('id', 'image', 'replicaName' ,'code', 'uploaded_at')
+    list_display = ('id', 'image', 'replicaName' ,'code', 'uploaded_at', 'style')
     search_fields = ('code',)
     list_filter = ('uploaded_at',)
 
