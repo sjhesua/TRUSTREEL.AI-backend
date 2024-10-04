@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_save
 from django.core.exceptions import ValidationError
+import uuid
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
@@ -32,6 +33,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class CustomUser(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.CASCADE, related_name='users')
     email = models.EmailField(unique=True)  # Mantener unique=True
     username = models.CharField(max_length=150, unique=False)  # Agregar campo username único

@@ -20,3 +20,9 @@ class VideoGenerationQueueItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     url= models.CharField(max_length=100)
     status = models.BooleanField(default=False)
+
+class Respuestas(models.Model):
+    video = models.ForeignKey(VideoGenerationQueue, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    url = models.CharField(max_length=1000)

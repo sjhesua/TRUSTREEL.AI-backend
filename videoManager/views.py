@@ -59,31 +59,36 @@ def upload_video(request):
     if request.method == 'POST':
         if not request.content_type.startswith('multipart/form-data'):
             return JsonResponse({'error': 'Unsupported Media Type'}, status=415)
-
+        
         video_file = request.FILES.get('video')
         if not video_file:
             return JsonResponse({'error': 'No video file provided'}, status=400)
 
-        # Asegurarse de que la ruta de almacenamiento exista
-        video_dir = os.path.join(settings.MEDIA_ROOT, 'videos')
-        if not os.path.exists(video_dir):
-            os.makedirs(video_dir)
+        # Obtener videogenerationqueue_id del request
+        videogenerationqueue_id = request.POST.get('videogenerationqueue_id')
+        if not videogenerationqueue_id:
+            return JsonResponse({'error': 'No videogenerationqueue_id provided'}, status=400)
 
-        # Guardar el video en el backend
-        video_path = default_storage.save(os.path.join('videos', video_file.name), ContentFile(video_file.read()))
-        absolute_video_path = os.path.join(settings.MEDIA_ROOT, video_path)
+        # Buscar el customuser_id asociado a videogenerationqueue_id
+        try:
+            from .models import VideoGenerationQueue  # Importar el modelo correspondiente
+            video_queue = VideoGenerationQueue.objects.get(id=videogenerationqueue_id)
+            customuser_id = video_queue.customuser_id
 
+        except VideoGenerationQueue.DoesNotExist:
+            return JsonResponse({'error': 'Invalid videogenerationqueue_id'}, status=404)
+        
         # Información de BunnyCDN Storage
         REGION = ''  # Si es la región alemana deja esto como una cadena vacía: ''
-        STORAGE_ZONE_NAME = 'video-call-demo'
-        ACCESS_KEY = '97033b83-b2dc-4786-9033d399b132-a786-473f'
+        STORAGE_ZONE_NAME = 'trustreel'
+        ACCESS_KEY = '0fd94989-65b4-4d8e-a95672c97c26-4132-4f8c'
         FILENAME_EXTENSION = video_file.name
-
+        FOLDERNAME = customuser_id  # Utilizar customuser_id para FOLDERNAME
         base_url = "storage.bunnycdn.com"
         if REGION:
             base_url = f"{REGION}.{base_url}"
 
-        url = f"https://{base_url}/{STORAGE_ZONE_NAME}/testfff/{FILENAME_EXTENSION}"
+        url = f"https://{base_url}/{STORAGE_ZONE_NAME}/{FOLDERNAME}/{videogenerationqueue_id}/{FILENAME_EXTENSION}"
 
         headers = {
             "AccessKey": ACCESS_KEY,
@@ -93,15 +98,11 @@ def upload_video(request):
 
         # Subida del video a BunnyCDN Storage
         try:
-            with open(absolute_video_path, 'rb') as file_data:
-                response = requests.put(url, headers=headers, data=file_data, verify=False)
+            response = requests.put(url, headers=headers, data=video_file.read(), verify=False)
 
             if response.status_code == 201:
-                # Eliminar el archivo local después de la subida exitosa
-                default_storage.delete(video_path)
                 return JsonResponse({'message': 'Video uploaded successfully', 'data': response.json()})
             else:
-                # Mantener el archivo local si la subida falla
                 return JsonResponse({'error': 'Failed to upload video', 'details': response.text}, status=response.status_code)
         except requests.exceptions.RequestException as e:
             logger.error(f"Error uploading video to BunnyCDN: {e}")
@@ -113,8 +114,8 @@ def upload_video(request):
 def create_folder(folder_name):
     # Información de BunnyCDN Storage
     REGION = ''  # Si es la región alemana deja esto como una cadena vacía: ''
-    STORAGE_ZONE_NAME = 'video-call-demo'
-    ACCESS_KEY = '97033b83-b2dc-4786-9033d399b132-a786-473f'
+    STORAGE_ZONE_NAME = 'trustreel'
+    ACCESS_KEY = '0fd94989-65b4-4d8e-a95672c97c26-4132-4f8c'
 
     base_url = "storage.bunnycdn.com"
     if REGION:
