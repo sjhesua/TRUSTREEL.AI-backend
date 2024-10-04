@@ -56,58 +56,80 @@ class CreateCollection(APIView):
 
 @csrf_exempt
 def upload_video(request):
+    print("Request received")
     if request.method == 'POST':
+        print("Request method is POST")
+        print(f"Request POST data: {request.POST}")
+        print(f"Request FILES data: {request.FILES}")
+
         if not request.content_type.startswith('multipart/form-data'):
+            print("Unsupported Media Type")
             return JsonResponse({'error': 'Unsupported Media Type'}, status=415)
         
         video_file = request.FILES.get('video')
         if not video_file:
+            print("No video file provided")
             return JsonResponse({'error': 'No video file provided'}, status=400)
 
         # Obtener videogenerationqueue_id del request
         videogenerationqueue_id = request.POST.get('videogenerationqueue_id')
+        print(f"videogenerationqueue_id: {videogenerationqueue_id}")
         if not videogenerationqueue_id:
+            print("No videogenerationqueue_id provided")
             return JsonResponse({'error': 'No videogenerationqueue_id provided'}, status=400)
 
-        # Buscar el customuser_id asociado a videogenerationqueue_id
+        # Buscar el user_id asociado a videogenerationqueue_id
         try:
             from .models import VideoGenerationQueue  # Importar el modelo correspondiente
             video_queue = VideoGenerationQueue.objects.get(id=videogenerationqueue_id)
-            customuser_id = video_queue.customuser_id
-
+            print(f"video_queue: {video_queue}")
+            user_id = video_queue.user.id
+            print(f"user_id: {user_id}")
         except VideoGenerationQueue.DoesNotExist:
+            print("Invalid videogenerationqueue_id")
             return JsonResponse({'error': 'Invalid videogenerationqueue_id'}, status=404)
+        except AttributeError as e:
+            print(f"AttributeError: {e}")
+            return JsonResponse({'error': 'AttributeError', 'details': str(e)}, status=500)
         
         # Información de BunnyCDN Storage
         REGION = ''  # Si es la región alemana deja esto como una cadena vacía: ''
         STORAGE_ZONE_NAME = 'trustreel'
         ACCESS_KEY = '0fd94989-65b4-4d8e-a95672c97c26-4132-4f8c'
         FILENAME_EXTENSION = video_file.name
-        FOLDERNAME = customuser_id  # Utilizar customuser_id para FOLDERNAME
+        FOLDERNAME = user_id  # Utilizar user_id para FOLDERNAME
         base_url = "storage.bunnycdn.com"
         if REGION:
             base_url = f"{REGION}.{base_url}"
 
         url = f"https://{base_url}/{STORAGE_ZONE_NAME}/{FOLDERNAME}/{videogenerationqueue_id}/{FILENAME_EXTENSION}"
+        print(f"URL: {url}")
 
         headers = {
             "AccessKey": ACCESS_KEY,
             "Content-Type": "application/octet-stream",
             "accept": "application/json"
         }
+        print(f"Headers: {headers}")
 
         # Subida del video a BunnyCDN Storage
         try:
             response = requests.put(url, headers=headers, data=video_file.read(), verify=False)
+            print(f"Response status code: {response.status_code}")
+            print(f"Response text: {response.text}")
 
             if response.status_code == 201:
+                print("Video uploaded successfully")
                 return JsonResponse({'message': 'Video uploaded successfully', 'data': response.json()})
             else:
+                print("Failed to upload video")
                 return JsonResponse({'error': 'Failed to upload video', 'details': response.text}, status=response.status_code)
         except requests.exceptions.RequestException as e:
             logger.error(f"Error uploading video to BunnyCDN: {e}")
+            print(f"Exception: {e}")
             return JsonResponse({'error': 'Failed to upload video', 'details': str(e)}, status=500)
 
+    print("Invalid request method")
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @csrf_exempt
