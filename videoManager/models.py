@@ -13,6 +13,9 @@ class VideoGenerationQueue(models.Model):
     videoName = models.CharField(max_length=100)
     customeURL = models.CharField(max_length=300)
     replicId = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.videoName
 
 class VideoGenerationQueueItem(models.Model):
     videoText = models.CharField(max_length=10000)
@@ -26,3 +29,18 @@ class Respuestas(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     url = models.CharField(max_length=1000)
+
+class VideoResponse(models.Model):
+    video = models.ForeignKey(VideoGenerationQueue, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    url = models.CharField(max_length=1000, blank=True, null=True)
+    status = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return str(self.id) +' - '+ self.video.videoName
+
+class VideoResponsePart(models.Model):
+    video = models.ForeignKey(VideoResponse, on_delete=models.CASCADE)
+    url = models.CharField(max_length=10000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=False)

@@ -4,4 +4,4 @@ from .models import ImageUpload
 class ImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageUpload
-        fields = ['image', 'code','replicaName']
+        fields = ['image', 'code','replicaName','style']

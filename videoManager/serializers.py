@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Video, VideoGenerationQueue, VideoGenerationQueueItem
+from .models import Video, VideoGenerationQueue, VideoGenerationQueueItem, VideoResponse, VideoResponsePart
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,3 +23,18 @@ class VideoGenerationQueueSerializer(serializers.ModelSerializer):
     def get_items(self, obj):
         items = VideoGenerationQueueItem.objects.filter(queue=obj)
         return VideoGenerationQueueItemSerializer(items, many=True).data
+
+class VideoResponseSerializer(serializers.ModelSerializer):
+    url = serializers.URLField(required=False)
+
+    class Meta:
+        model = VideoResponse
+        fields = ['id', 'video', 'created_at', 'url', 'status']
+
+class VideoResponsePartSerializer(serializers.ModelSerializer):
+    url = serializers.URLField(required=False)
+
+    class Meta:
+        model = VideoResponsePart
+        fields = ['id', 'video', 'url', 'created_at', 'status']
+    

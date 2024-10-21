@@ -10,7 +10,7 @@ from django.core.files.storage import default_storage
 from django.conf import settings
 
 from .models import Video, VideoGenerationQueue, VideoGenerationQueueItem
-from .serializers import VideoSerializer,VideoGenerationQueueSerializer, VideoGenerationQueueItemSerializer
+from .serializers import VideoSerializer,VideoGenerationQueueSerializer, VideoGenerationQueueItemSerializer, VideoResponseSerializer, VideoResponsePartSerializer
 
 import requests
 import logging
@@ -73,6 +73,7 @@ def upload_video(request):
 
         # Obtener videogenerationqueue_id del request
         videogenerationqueue_id = request.POST.get('videogenerationqueue_id')
+        videoResponse_id = request.POST.get('videoResponse_id')
         print(f"videogenerationqueue_id: {videogenerationqueue_id}")
         if not videogenerationqueue_id:
             print("No videogenerationqueue_id provided")
@@ -102,7 +103,7 @@ def upload_video(request):
         if REGION:
             base_url = f"{REGION}.{base_url}"
 
-        url = f"https://{base_url}/{STORAGE_ZONE_NAME}/{FOLDERNAME}/{videogenerationqueue_id}/{FILENAME_EXTENSION}"
+        url = f"https://{base_url}/{STORAGE_ZONE_NAME}/{FOLDERNAME}/{videogenerationqueue_id}/{videoResponse_id}/{FILENAME_EXTENSION}"
         print(f"URL: {url}")
 
         headers = {
@@ -304,3 +305,22 @@ def tavus_callback(request):
         return Response({"message": "URL updated successfully"}, status=status.HTTP_200_OK)
     except VideoGenerationQueueItem.DoesNotExist:
         return Response({"error": "VideoGenerationQueueItem not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+#funcion para crear video response
+@api_view(['POST'])
+def create_video_response(request):
+    if request.method == 'POST':
+        serializer = VideoResponseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_video_response_part(request):
+    if request.method == 'POST':
+        serializer = VideoResponsePartSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
