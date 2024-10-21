@@ -310,6 +310,7 @@ def tavus_callback(request):
 @api_view(['POST'])
 def create_video_response(request):
     if request.method == 'POST':
+        print(f"Request data: {request.data}")
         serializer = VideoResponseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -319,8 +320,13 @@ def create_video_response(request):
 @api_view(['POST'])
 def create_video_response_part(request):
     if request.method == 'POST':
+        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        print(f"Request data: {request.data}")
+        print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
         serializer = VideoResponsePartSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print(f"Serializer errors: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

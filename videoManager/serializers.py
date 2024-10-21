@@ -32,9 +32,8 @@ class VideoResponseSerializer(serializers.ModelSerializer):
         fields = ['id', 'video', 'created_at', 'url', 'status']
 
 class VideoResponsePartSerializer(serializers.ModelSerializer):
-    url = serializers.URLField(required=False)
 
     class Meta:
         model = VideoResponsePart
-        fields = ['id', 'video', 'url', 'created_at', 'status']
+        fields = ['id', 'video', 'created_at', 'status']
     

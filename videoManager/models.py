@@ -41,6 +41,5 @@ class VideoResponse(models.Model):
 
 class VideoResponsePart(models.Model):
     video = models.ForeignKey(VideoResponse, on_delete=models.CASCADE)
-    url = models.CharField(max_length=10000, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False)
