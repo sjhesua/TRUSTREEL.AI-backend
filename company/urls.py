@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/register/', views.RegisterView.as_view(), name='register-user'),
     path('api/test/', views.protected_view, name='test'),
     path('api/help/', views.view_all_routes, name='all-routes'),
+    path('api/get-user-id/', views.get_user_id_from_token, name='get-user-id'),
 ]

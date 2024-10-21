@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
+from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
@@ -62,3 +63,20 @@ def subdomain_view(request):
 
 class CustomTokenVerifyView(TokenVerifyView):
     pass
+
+@api_view(['GET'])
+def get_user_id_from_token(request):
+    token = request.headers.get('Authorization', None)
+    if token is None:
+        return Response({'error': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        # Remove 'Bearer ' prefix if present
+        if token.startswith('Bearer '):
+            token = token[7:]
+
+        access_token = AccessToken(token)
+        user_id = access_token['user_id']
+        return Response({'user_id': user_id}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
